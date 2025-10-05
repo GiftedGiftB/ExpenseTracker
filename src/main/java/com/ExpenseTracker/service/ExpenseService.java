@@ -39,4 +39,24 @@ public class ExpenseService {
         return expenses.stream().map(Expense::getAmount).filter(Objects::nonNull).reduce(0.0, Double::sum);
     }
 
+    public Expense updateExpense(Long userId, Long expenseId, Expense updatedExpense) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Expense existingExpense = expenseRepository.findById(expenseId).orElseThrow(() -> new RuntimeException("Expense not found"));
+        if (!existingExpense.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Expense does not belong to this user");
+        }
+        existingExpense.setTitle(updatedExpense.getTitle());
+        existingExpense.setAmount(updatedExpense.getAmount());
+        existingExpense.setDate(updatedExpense.getDate());
+        return expenseRepository.save(existingExpense);
+    }
+
+    public void deleteExpense(Long userId, Long expenseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Expense expense = expenseRepository.findById(expenseId).orElseThrow(() -> new RuntimeException("Expense not found"));
+        if (!expense.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Expense does not belong to this user");
+        }
+        expenseRepository.delete(expense);
+    }
 }

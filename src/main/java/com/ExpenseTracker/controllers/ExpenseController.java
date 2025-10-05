@@ -32,4 +32,16 @@ public class ExpenseController {
     public Double getTotalExpenses(@PathVariable Long userId){
         return expenseService.getTotalExpenses(userId);
     }
+
+    @PutMapping("/{expenseId}")
+    public Expense updateExpense(@PathVariable Long userId, @PathVariable Long expenseId, @RequestBody Expense updatedExpense) {
+        return expenseService.updateExpense(userId, expenseId, updatedExpense);
+    }
+
+    @DeleteMapping("/{expenseId}")
+    public String deleteExpense(@PathVariable Long userId, @PathVariable Long expenseId) {
+        expenseService.deleteExpense(userId, expenseId);
+        return "Expense deleted successfully.";
+
+    }
 }
