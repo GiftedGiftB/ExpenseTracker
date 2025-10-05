@@ -2,6 +2,7 @@ package com.ExpenseTracker.controllers;
 
 import com.ExpenseTracker.data.models.Expense;
 import com.ExpenseTracker.service.ExpenseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import java.util.List;
 @RequestMapping("/api/users/{userId}/expenses")
 public class ExpenseController {
 
+
     private final ExpenseService expenseService;
 
+    @Autowired
     public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
     }
