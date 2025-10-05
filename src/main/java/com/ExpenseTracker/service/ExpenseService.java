@@ -7,6 +7,7 @@ import com.ExpenseTracker.data.repositories.ExpenseRepository;
 import com.ExpenseTracker.data.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,9 @@ public class ExpenseService {
 
     public Expense addExpense(Long userId, Expense expense) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        if (expense.getDate() == null) {
+            expense.setDate(LocalDate.now());
+        }
         expense.setUser(user);
         return expenseRepository.save(expense);
     }
