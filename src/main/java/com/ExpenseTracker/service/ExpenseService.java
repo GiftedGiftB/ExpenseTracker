@@ -1,12 +1,10 @@
 package com.ExpenseTracker.service;
 
-
 import com.ExpenseTracker.data.models.Expense;
 import com.ExpenseTracker.data.models.User;
 import com.ExpenseTracker.data.repositories.ExpenseRepository;
 import com.ExpenseTracker.data.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
