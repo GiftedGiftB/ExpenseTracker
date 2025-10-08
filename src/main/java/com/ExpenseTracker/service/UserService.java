@@ -3,7 +3,6 @@ package com.ExpenseTracker.service;
 import com.ExpenseTracker.data.models.User;
 import com.ExpenseTracker.data.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
