@@ -3,7 +3,6 @@ package com.ExpenseTracker.controllers;
 import com.ExpenseTracker.data.models.User;
 import com.ExpenseTracker.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

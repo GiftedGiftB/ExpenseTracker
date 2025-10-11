@@ -1,4 +1,4 @@
-package com.ExpenseTracker.service;
+package com.ExpenseTracker;
 
 import com.ExpenseTracker.data.models.Expense;
 import com.ExpenseTracker.data.models.User;
