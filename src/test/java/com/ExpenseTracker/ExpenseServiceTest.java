@@ -1,10 +1,9 @@
-package com.ExpenseTracker;
+package com.ExpenseTracker.service;
 
 import com.ExpenseTracker.data.models.Expense;
 import com.ExpenseTracker.data.models.User;
 import com.ExpenseTracker.data.repositories.ExpenseRepository;
 import com.ExpenseTracker.data.repositories.UserRepository;
-import com.ExpenseTracker.service.ExpenseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -39,6 +38,7 @@ public class ExpenseServiceTest {
         user = new User();
         user.setId(1L);
         user.setName("John Doe");
+
         expense = new Expense();
         expense.setId(1L);
         expense.setTitle("Lunch");
@@ -51,7 +51,9 @@ public class ExpenseServiceTest {
     void testAddExpense() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
+
         Expense savedExpense = expenseService.addExpense(1L, expense);
+
         assertNotNull(savedExpense);
         assertEquals("Lunch", savedExpense.getTitle());
         verify(expenseRepository, times(1)).save(any(Expense.class));
@@ -60,7 +62,9 @@ public class ExpenseServiceTest {
     @Test
     void testGetExpenses() {
         when(expenseRepository.findByUserId(1L)).thenReturn(List.of(expense));
+
         List<Expense> result = expenseService.getExpenses(1L);
+
         assertEquals(1, result.size());
         assertEquals("Lunch", result.get(0).getTitle());
         verify(expenseRepository, times(1)).findByUserId(1L);
@@ -69,15 +73,37 @@ public class ExpenseServiceTest {
     @Test
     void testGetTotalExpenses() {
         when(expenseRepository.findByUserId(1L)).thenReturn(Arrays.asList(expense));
+
         Double total = expenseService.getTotalExpenses(1L);
+
         assertEquals(20.5, total);
+    }
+
+    @Test
+    void testUpdateExpense() {
+        Expense updatedExpense = new Expense();
+        updatedExpense.setTitle("Dinner");
+        updatedExpense.setAmount(30.0);
+        updatedExpense.setDate(LocalDate.now());
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(expenseRepository.findById(1L)).thenReturn(Optional.of(expense));
+        when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
+
+        Expense result = expenseService.updateExpense(1L, 1L, updatedExpense);
+
+        assertEquals("Dinner", result.getTitle());
+        assertEquals(30.0, result.getAmount());
+        verify(expenseRepository, times(1)).save(expense);
     }
 
     @Test
     void testDeleteExpense() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(expenseRepository.findById(1L)).thenReturn(Optional.of(expense));
+
         expenseService.deleteExpense(1L, 1L);
+
         verify(expenseRepository, times(1)).delete(expense);
     }
 
@@ -85,20 +111,5 @@ public class ExpenseServiceTest {
     void testAddExpense_UserNotFound() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> expenseService.addExpense(99L, expense));
-    }
-
-    @Test
-    void testUpdateExpense() {
-        Expense updatedExpense = new Expense();
-        updatedExpense.setTitle("Dinner");
-        updatedExpense.setAmount(1000.0);
-        updatedExpense.setDate(LocalDate.now());
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(expenseRepository.findById(1L)).thenReturn(Optional.of(expense));
-        when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
-        Expense result = expenseService.updateExpense(1L, 1L, updatedExpense);
-        assertEquals("Dinner", result.getTitle());
-        assertEquals(1000.0, result.getAmount());
-        verify(expenseRepository, times(1)).save(expense);
     }
 }

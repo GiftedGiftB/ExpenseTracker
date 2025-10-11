@@ -3,6 +3,8 @@ package com.ExpenseTracker.controllers;
 import com.ExpenseTracker.data.models.Expense;
 import com.ExpenseTracker.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -34,8 +36,13 @@ public class ExpenseController {
     }
 
     @PutMapping("/{expenseId}")
-    public Expense updateExpense(@PathVariable Long userId, @PathVariable Long expenseId, @RequestBody Expense updatedExpense) {
-        return expenseService.updateExpense(userId, expenseId, updatedExpense);
+    public ResponseEntity<?> updateExpense(@PathVariable Long userId, @PathVariable Long expenseId, @RequestBody Expense updatedExpense) {
+        try {
+            Expense expense = expenseService.updateExpense(userId, expenseId, updatedExpense);
+            return ResponseEntity.ok(expense);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{expenseId}")
