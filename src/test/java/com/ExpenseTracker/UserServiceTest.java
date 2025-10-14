@@ -10,12 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +37,6 @@ public class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
         user = new User();
         user.setId(1L);
         user.setName("John Doe");
@@ -55,7 +52,6 @@ public class UserServiceTest {
     void testAddExpense() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
-
         Expense savedExpense = expenseService.addExpense(1L, expense);
         assertNotNull(savedExpense);
         assertEquals("Lunch", savedExpense.getTitle());
@@ -74,9 +70,7 @@ public class UserServiceTest {
     @Test
     void testGetTotalExpenses() {
         when(expenseRepository.findByUserId(1L)).thenReturn(Arrays.asList(expense));
-
         Double total = expenseService.getTotalExpenses(1L);
-
         assertEquals(20.5, total);
     }
 
@@ -86,7 +80,6 @@ public class UserServiceTest {
         updatedExpense.setTitle("Dinner");
         updatedExpense.setAmount(30.0);
         updatedExpense.setDate(LocalDate.now());
-
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(expenseRepository.findById(1L)).thenReturn(Optional.of(expense));
         when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
