@@ -1,9 +1,10 @@
-package com.ExpenseTracker.service;
+package com.ExpenseTracker;
 
 import com.ExpenseTracker.data.models.Expense;
 import com.ExpenseTracker.data.models.User;
 import com.ExpenseTracker.data.repositories.ExpenseRepository;
 import com.ExpenseTracker.data.repositories.UserRepository;
+import com.ExpenseTracker.service.ExpenseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
